@@ -39,4 +39,5 @@ describe List do
     list.delete
     expect(List.all).to eq []
   end
+
 end
