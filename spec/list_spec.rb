@@ -32,4 +32,11 @@ describe List do
     list.save
     expect(list.id).to be_an_instance_of Fixnum
   end
+
+  it 'deletes a list' do
+    list = List.new('chattel')
+    list.save
+    list.delete
+    expect(List.all).to eq []
+  end
 end

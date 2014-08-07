@@ -21,6 +21,10 @@ class List
     lists
   end
 
+  def delete
+    DB.exec("DELETE FROM lists WHERE id = #{self.id};")
+  end
+
   def save
     results = DB.exec("INSERT INTO lists (name) VALUES ('#{@name}') RETURNING id;")
     @id = results.first['id'].to_i
