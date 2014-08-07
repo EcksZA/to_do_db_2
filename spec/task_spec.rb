@@ -32,4 +32,10 @@ describe Task do
     expect(task1).to eq task2
   end
 
+  it 'deletes a task' do
+    task = Task.new('chattel', 1)
+    task.save
+    task.delete
+    expect(Task.all).to eq []
+  end
 end

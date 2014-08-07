@@ -6,6 +6,7 @@ require 'pry'
 DB = PG.connect(:dbname => 'to_do_base')
 
 @current_list = nil
+@current_task = nil
 
 def welcome
   puts "Welcome to the To Do list \n\n"
@@ -81,7 +82,7 @@ def task_menu
  List.all.each do |list|
   puts "\nYou've selected #{list.name}.\n"
  end
- List.all.each do |list|
+  List.all.each do |list|
     if list.name == user_input
       @current_list = list
       puts @current_list.name
@@ -141,6 +142,20 @@ def list_tasks
 
   puts "\n\n"
   main_menu
+end
+
+def destroy_task
+  puts "Which task from #{@current_list.name} would you like to annihilate?"
+  user_input = gets.chomp
+
+  Task.all.each do |task|
+    if task.name == user_input
+      @current_task = task
+    end
+  end
+  @current_task.delete
+  puts "#{@current_task.name} has been DELETED! Returning to task menu...\n\n"
+  task_menu
 end
 
 
