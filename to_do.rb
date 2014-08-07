@@ -1,6 +1,7 @@
 require 'pg'
 require './lib/task'
 require './lib/list'
+require 'pry'
 
 DB = PG.connect(:dbname => 'to_do_base')
 
@@ -37,14 +38,34 @@ def create_list
   new_list = List.new(user_list)
   new_list.save
 
-  puts "\nPerfect, returning to the main menu.\n"
+  puts "\n#{new_list.name} successfully saved, returning to the main menu.\n\n"
   main_menu
 end
 
 def view_lists
-    List.all.each_with_index do |list, index|
+  List.all.each_with_index do |list, index|
     puts "#{index+1}. #{list.name}"
   end
+
+  puts "press d to delete a list or any other key to return to menu"
+  input = gets.chomp
+
+  if input == "d"
+    delete_list
+  else
+    main_menu
+  end
+end
+
+def delete_list
+  puts "Which list must meet its demise??"
+  input = gets.chomp
+  List.all.each do |list|
+    if list.name == input
+      list.delete
+    end
+  end
+  main_menu
 end
 
 # def add_task

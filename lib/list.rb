@@ -3,8 +3,9 @@ require 'pg'
 class List
   attr_reader :name, :id
 
-  def initialize(name)
+  def initialize(name, id=nil)
     @name = name
+    @id = id
   end
 
   def ==(another_list)
@@ -16,17 +17,18 @@ class List
     lists = []
     results.each do |result|
       name = result['name']
-      lists << List.new(name)
+      id = result['id']
+      lists << List.new(name, id)
     end
     lists
-  end
-
-  def delete
-    DB.exec("DELETE FROM lists WHERE id = #{self.id};")
   end
 
   def save
     results = DB.exec("INSERT INTO lists (name) VALUES ('#{@name}') RETURNING id;")
     @id = results.first['id'].to_i
+  end
+
+  def delete
+    DB.exec("DELETE FROM lists WHERE id = #{self.id};")
   end
 end
