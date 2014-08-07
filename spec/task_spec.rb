@@ -31,4 +31,5 @@ describe Task do
     task2 = Task.new('learn SQL', 1)
     expect(task1).to eq task2
   end
+
 end

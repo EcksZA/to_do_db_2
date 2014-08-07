@@ -31,4 +31,12 @@ class List
   def delete
     DB.exec("DELETE FROM lists WHERE id = #{self.id};")
   end
+
+  def tasks
+    results = DB.exec("SELECT * FROM tasks WHERE list_id = #{self.id}")
+    Task.all.each do |task|
+      puts task.name
+    end
+  end
+
 end

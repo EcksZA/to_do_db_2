@@ -137,11 +137,8 @@ end
 def list_tasks
   puts "Here are all of your tasks for #{@current_list.name}"
 
-  Task.all.each do |task|
-    if @current_list.id.to_i == task.list_id.to_i
-      puts task.name
-    end
-  end
+  @current_list.tasks
+
   puts "\n\n"
   main_menu
 end

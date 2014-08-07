@@ -27,5 +27,9 @@ class Task
   def save
     DB.exec("INSERT INTO tasks (name, list_id) VALUES ('#{@name}', #{@list_id});")
   end
+
+  # def tasks(list_id)
+  #   DB.exec("SELECT * FROM tasks WHERE id = #{@list_id}")
+  # end
 end
 
