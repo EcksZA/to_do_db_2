@@ -133,7 +133,6 @@ def list_tasks
   @current_list.tasks.each do |task|
     puts task.name
   end
-
   puts "\n\n"
   main_menu
 end

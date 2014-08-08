@@ -1,19 +1,20 @@
 require 'spec_helper'
+require 'pry'
 
 describe List do
   it 'is initialized with a name' do
-    list = List.new('Epicodus stuff')
+    list = List.new({:name => 'Epicodus Stuff'})
     expect(list).to be_an_instance_of List
   end
 
   it 'tells you its name' do
-    list = List.new('Epicodus stuff')
-    expect(list.name).to eq 'Epicodus stuff'
+    list = List.new({:name => 'Epicodus Stuff'})
+    expect(list.name).to eq 'Epicodus Stuff'
   end
 
   it 'is the same list if it has the same name' do
-    list1 = List.new('Epicodus stuff')
-    list2 = List.new('Epicodus stuff')
+    list1 = List.new({:name => 'Epicodus Stuff'})
+    list2 = List.new({:name => 'Epicodus Stuff'})
     expect(list1).to eq list2
   end
 
@@ -22,21 +23,21 @@ describe List do
   end
 
   it 'lets you save lists to the database' do
-    list = List.new('Epicodus stuff')
+    list = List.new({:name => 'Epicodus Stuff'})
     list.save
     expect(List.all).to eq [list]
   end
 
   it 'sets its ID when you save it' do
-    list = List.new('Epicodus stuff')
+    list = List.new({:name => 'Epicodus Stuff'})
     list.save
     expect(list.id).to be_an_instance_of Fixnum
   end
 
   it 'deletes a list and all tasks associated' do
-    test_list = List.new('chattel')
+    test_list = List.new({:name => 'Epicodus Stuff'})
     test_list.save
-    test_task = Task.new('nappies', test_list.id)
+    test_task = Task.new({:name => 'learn how to surf', :list_id => test_list.id})
     test_task.save
     test_list.delete
     expect(List.all).to eq []
@@ -44,9 +45,9 @@ describe List do
   end
 
   it 'lists all the tasks in a particular list' do
-    test_list = List.new('Bucket List')
+    test_list = List.new({:name => 'Epicodus Stuff'})
     test_list.save
-    test_task = Task.new('Skydive in the Maldives', test_list.id)
+    test_task = Task.new({:name => 'learn how to surf', :list_id => test_list.id})
     test_task.save
     expect(test_list.tasks).to eq [test_task]
   end

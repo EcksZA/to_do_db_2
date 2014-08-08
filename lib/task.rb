@@ -4,10 +4,10 @@ require 'pry'
 class Task
   attr_reader :name, :list_id, :id
 
-  def initialize(name, list_id, id=nil)
-    @name = name
-    @list_id = list_id
-    @id = id
+  def initialize(hash)
+    @name = hash[:name]
+    @list_id = hash[:list_id]
+    @id = hash[:id]
   end
 
   def ==(another_task)
@@ -22,7 +22,7 @@ class Task
       name = result['name']
       list_id = result['list_id'].to_i
       id = result['id'].to_i
-      tasks << Task.new(name, list_id, id)
+      tasks << Task.new({:name => name, :list_id => list_id, :id => id})
     end
     tasks
   end

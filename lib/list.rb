@@ -4,9 +4,9 @@ require 'pry'
 class List
   attr_reader :name, :id
 
-  def initialize(name, id=nil)
-    @name = name
-    @id = id
+  def initialize(hash)
+    @name = hash[:name]
+    @id = hash[:id]
   end
 
   def ==(another_list)
@@ -19,7 +19,7 @@ class List
     results.each do |result|
       name = result['name']
       id = result['id']
-      lists << List.new(name, id)
+      lists << List.new({:name => name, :id => id})
     end
     lists
   end
@@ -40,7 +40,7 @@ class List
     results.each do |result|
       name = result['name']
       id = result['id']
-      tasks << Task.new(name, self.id, id)
+      tasks << Task.new({:name => name, :list_id => self.id, :id => id})
     end
     tasks
   end
