@@ -33,19 +33,21 @@ describe List do
     expect(list.id).to be_an_instance_of Fixnum
   end
 
-  it 'deletes a list' do
-    list = List.new('chattel')
-    list.save
-    list.delete
+  it 'deletes a list and all tasks associated' do
+    test_list = List.new('chattel')
+    test_list.save
+    test_task = Task.new('nappies', test_list.id)
+    test_task.save
+    test_list.delete
     expect(List.all).to eq []
+    expect(Task.all).to eq []
   end
 
   it 'lists all the tasks in a particular list' do
     test_list = List.new('Bucket List')
-    test_task = Task.new('Skydive in the Maldives', 1)
     test_list.save
+    test_task = Task.new('Skydive in the Maldives', test_list.id)
     test_task.save
     expect(test_list.tasks).to eq [test_task]
   end
-
 end

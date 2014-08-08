@@ -1,4 +1,5 @@
 require 'pg'
+require 'pry'
 
 class List
   attr_reader :name, :id
@@ -30,13 +31,18 @@ class List
 
   def delete
     DB.exec("DELETE FROM lists WHERE id = #{self.id};")
+    DB.exec("DELETE FROM tasks WHERE list_id = #{self.id};")
   end
 
   def tasks
     results = DB.exec("SELECT * FROM tasks WHERE list_id = #{self.id}")
-    Task.all.each do |task|
-      puts task.name
+    tasks = []
+    results.each do |result|
+      name = result['name']
+      id = result['id']
+      tasks << Task.new(name, self.id, id)
     end
+    tasks
   end
 
 end
