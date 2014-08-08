@@ -2,12 +2,17 @@ require 'pg'
 require 'pry'
 
 class Task
-  attr_reader :name, :list_id, :id
+  attr_accessor :name, :list_id, :id, :completed
+
+  # def completed=(boolean)
+  #   @completed = false
+  # end
 
   def initialize(hash)
     @name = hash[:name]
     @list_id = hash[:list_id]
     @id = hash[:id]
+    @completed = hash[:completed]
   end
 
   def ==(another_task)
@@ -22,13 +27,16 @@ class Task
       name = result['name']
       list_id = result['list_id'].to_i
       id = result['id'].to_i
-      tasks << Task.new({:name => name, :list_id => list_id, :id => id})
+      completed = result['completed']
+      completed == 't' ? completed = true : completed = false
+      tasks << Task.new({:name => name, :list_id => list_id, :id => id, :completed => completed})
     end
     tasks
   end
 
   def save
-    results = DB.exec("INSERT INTO tasks (name, list_id) VALUES ('#{@name}', #{@list_id}) RETURNING id;")
+    @completed = false
+    results = DB.exec("INSERT INTO tasks (name, list_id, completed) VALUES ('#{@name}', #{@list_id}, '#{@completed}') RETURNING id;")
     @id = results.first['id'].to_i
   end
 
@@ -37,8 +45,7 @@ class Task
   end
 
   def done
-    result = DB.exec("UPDATE tasks SET name = '#{self.name} -- DONE'
-                  WHERE id = #{self.id};")
+    result = DB.exec("UPDATE tasks SET completed = '#{true}' WHERE id = #{self.id};")
   end
 
 end
