@@ -1,4 +1,5 @@
 require 'pg'
+require 'pry'
 
 class Task
   attr_reader :name, :list_id, :id
@@ -33,6 +34,11 @@ class Task
 
   def delete
     DB.exec("DELETE FROM tasks WHERE id = #{self.id};")
+  end
+
+  def done
+    result = DB.exec("UPDATE tasks SET name = '#{self.name} -- DONE'
+                  WHERE id = #{self.id};")
   end
 
 end

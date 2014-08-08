@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pry'
 
 describe Task do
   it 'starts with no tasks' do
@@ -37,5 +38,12 @@ describe Task do
     task.save
     task.delete
     expect(Task.all).to eq []
+  end
+
+  it 'marks a task as done' do
+    task = Task.new('learn how to surf', 1)
+    task.save
+    task.done
+    expect(Task.all.first.name).to eq 'learn how to surf -- DONE'
   end
 end
