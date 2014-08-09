@@ -48,5 +48,19 @@ class Task
     result = DB.exec("UPDATE tasks SET completed = '#{true}' WHERE id = #{self.id};")
   end
 
+  def self.show_completed
+
+    Task.all.select { |task| task.completed == true }
+    # results = DB.exec("SELECT * FROM tasks WHERE completed = #{true}")
+    # completed_tasks = []
+    # results.each do |result|
+    #   name = result['name']
+    #   id = result['id']
+    #   completed = result['completed']
+    #   completed_tasks << Task.new({:name => name, :list_id => self.id, :id => id, :completed => completed})
+    # end
+    # completed_tasks
+  end
+
 end
 

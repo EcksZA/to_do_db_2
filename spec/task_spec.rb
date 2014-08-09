@@ -54,4 +54,14 @@ describe Task do
     task.done
     expect(Task.all.first.completed).to eq true
   end
+
+  it 'shows the tasks that are marked as done' do
+    test_list = List.new({:name => 'Epicodus Stuff'})
+    test_list.save
+    task = Task.new({:name => 'learn how to surf', :list_id => test_list.id})
+    task.save
+    task.done
+    expect(Task.show_completed).to eq [task]
+  end
+
 end
