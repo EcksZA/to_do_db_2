@@ -2,17 +2,14 @@ require 'pg'
 require 'pry'
 
 class Task
-  attr_accessor :name, :list_id, :id, :completed
-
-  # def completed=(boolean)
-  #   @completed = false
-  # end
+  attr_accessor :name, :list_id, :id, :completed, :due_date
 
   def initialize(hash)
     @name = hash[:name]
     @list_id = hash[:list_id]
     @id = hash[:id]
     @completed = hash[:completed]
+    @due_date = hash[:due_date]
   end
 
   def ==(another_task)
@@ -28,15 +25,16 @@ class Task
       list_id = result['list_id'].to_i
       id = result['id'].to_i
       completed = result['completed']
+      due_date = result['due_date']
       completed == 't' ? completed = true : completed = false
-      tasks << Task.new({:name => name, :list_id => list_id, :id => id, :completed => completed})
+      tasks << Task.new({:name => name, :list_id => list_id, :id => id, :due_date => due_date, :completed => completed})
     end
     tasks
   end
 
   def save
     @completed = false
-    results = DB.exec("INSERT INTO tasks (name, list_id, completed) VALUES ('#{@name}', #{@list_id}, '#{@completed}') RETURNING id;")
+    results = DB.exec("INSERT INTO tasks (name, list_id, completed, due_date) VALUES ('#{@name}', #{@list_id}, '#{@completed}', '#{@due_date}') RETURNING id;")
     @id = results.first['id'].to_i
   end
 
@@ -49,17 +47,24 @@ class Task
   end
 
   def self.show_completed
-
     Task.all.select { |task| task.completed == true }
-    # results = DB.exec("SELECT * FROM tasks WHERE completed = #{true}")
-    # completed_tasks = []
-    # results.each do |result|
-    #   name = result['name']
-    #   id = result['id']
-    #   completed = result['completed']
-    #   completed_tasks << Task.new({:name => name, :list_id => self.id, :id => id, :completed => completed})
-    # end
-    # completed_tasks
+  end
+
+  def self.sort_by_date(time)
+    time == "soonest" ? results = DB.exec("SELECT * FROM tasks ORDER BY due_date ASC;") : results = DB.exec("SELECT * FROM tasks ORDER BY due_date DESC;")
+    sort_by_date = []
+    results.each do |result|
+      name = result['name']
+      due_date = result['due_date']
+      list_id = result['list_id'].to_i
+      sort_by_date << Task.new({:name => name, :due_date => due_date, :list_id => list_id})
+    end
+    sort_by_date
+  end
+
+  def edit(user_edit)
+   DB.exec("UPDATE tasks SET name = '#{user_edit}' WHERE id = #{self.id};")
+   self.name = user_edit
   end
 
 end

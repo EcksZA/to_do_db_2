@@ -2,7 +2,7 @@ require 'pg'
 require 'task'
 require 'list'
 
-DB = PG.connect(:dbname => 'to_do_quiz')
+DB = PG.connect(:dbname => 'to_do_spec')
 
 RSpec.configure do |config|
   config.after(:each) do

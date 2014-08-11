@@ -37,7 +37,7 @@ describe List do
   it 'deletes a list and all tasks associated' do
     test_list = List.new({:name => 'Epicodus Stuff'})
     test_list.save
-    test_task = Task.new({:name => 'learn how to surf', :list_id => test_list.id})
+    test_task = Task.new({:name => 'learn how to surf', :list_id => test_list.id, :due_date => '2014-08-23'})
     test_task.save
     test_list.delete
     expect(List.all).to eq []
@@ -47,7 +47,7 @@ describe List do
   it 'lists all the tasks in a particular list' do
     test_list = List.new({:name => 'Epicodus Stuff'})
     test_list.save
-    test_task = Task.new({:name => 'learn how to surf', :list_id => test_list.id})
+    test_task = Task.new({:name => 'learn how to surf', :list_id => test_list.id, :due_date => '2014-08-23'})
     test_task.save
     expect(test_list.tasks).to eq [test_task]
   end
